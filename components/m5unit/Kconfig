@@ -1,0 +1,95 @@
+menu "M5 Unit config"
+    config SOFTWARE_EXTERNAL_RTC_SUPPORT
+        bool "RTC(PCF8563)-Hardware [External]"
+        default n
+    config SOFTWARE_EXTERNAL_RTC_CLOCKOUT_1KHZ_SUPPORT
+        bool "RTC(PCF8563) CLOCKOUT_1KHZ"
+        depends on SOFTWARE_EXTERNAL_RTC_SUPPORT
+        default nq
+    config SOFTWARE_EXTERNAL_BUTTON_SUPPORT
+        bool "BUTTON-Hardware [External]"
+        default n
+    config SOFTWARE_EXTERNAL_SK6812_SUPPORT
+        bool "RGB(SK6812)-LED-Hardware [External]"
+        default n
+    config SOFTWARE_EXTERNAL_LED_SUPPORT
+        bool "LED-Hardware [External]"
+        default n
+    config SOFTWARE_EXTERNAL_ENV2_SUPPORT
+        bool "UNIT ENV2-Hardware [External]"
+        select SOFTWARE_SENSOR_SHT3X
+        select SOFTWARE_SENSOR_BMP280
+        default n
+    config SOFTWARE_EXTERNAL_ENV3_SUPPORT
+        bool "UNIT ENV3-Hardware [External]"
+        select SOFTWARE_SENSOR_SHT3X
+        select SOFTWARE_SENSOR_QMP6988
+        default n
+
+    menu "Sensor config"
+        config SOFTWARE_SENSOR_SHT3X
+            bool "SENSOR SHT3X"
+            select SOFTWARE_SENSOR_TYPE_TEMPERATURE
+            select SOFTWARE_SENSOR_TYPE_HUMIDITY
+            default n
+        config SOFTWARE_SENSOR_BMP280
+            bool "SENSOR BMP280"
+            select SOFTWARE_SENSOR_TYPE_PRESSURE
+            default n
+        config SOFTWARE_SENSOR_QMP6988
+            bool "SENSOR QMP6988"
+            select SOFTWARE_SENSOR_TYPE_PRESSURE
+            default n
+        config SOFTWARE_SENSOR_BME680
+            bool "SENSOR BME680"
+            select SOFTWARE_SENSOR_TYPE_TEMPERATURE
+            select SOFTWARE_SENSOR_TYPE_HUMIDITY
+            select SOFTWARE_SENSOR_TYPE_PRESSURE
+            default n
+        config SOFTWARE_SENSOR_ADT7410
+            bool "SENSOR ADT7410"
+            select SOFTWARE_SENSOR_TYPE_TEMPERATURE
+            default n
+        config SOFTWARE_SENSOR_SCD30
+            bool "SENSOR SCD30"
+            select SOFTWARE_SENSOR_TYPE_TEMPERATURE
+            select SOFTWARE_SENSOR_TYPE_HUMIDITY
+            select SOFTWARE_SENSOR_TYPE_CO2
+            default n
+        config SOFTWARE_SENSOR_SCD40
+            bool "SENSOR SCD40"
+            select SOFTWARE_SENSOR_TYPE_TEMPERATURE
+            select SOFTWARE_SENSOR_TYPE_HUMIDITY
+            select SOFTWARE_SENSOR_TYPE_CO2
+            default n
+        config SOFTWARE_SENSOR_MHZ19C
+            bool "SENSOR MHZ19C"
+            select SOFTWARE_SENSOR_TYPE_CO2
+            default n
+
+    endmenu
+
+    menu "Sensor type config"
+        config SOFTWARE_SENSOR_TYPE_TEMPERATURE
+            bool "SENSOR-TYPE TEMPERATURE"
+            select SOFTWARE_SENSOR_USE_SENSOR
+            default n
+        config SOFTWARE_SENSOR_TYPE_HUMIDITY
+            bool "SENSOR-TYPE HUMIDITY"
+            select SOFTWARE_SENSOR_USE_SENSOR
+            default n
+        config SOFTWARE_SENSOR_TYPE_PRESSURE
+            bool "SENSOR-TYPE PRESSURE"
+            select SOFTWARE_SENSOR_USE_SENSOR
+            default n
+        config SOFTWARE_SENSOR_TYPE_CO2
+            bool "SENSOR-TYPE CO2"
+            select SOFTWARE_SENSOR_USE_SENSOR
+            default n
+        config SOFTWARE_SENSOR_USE_SENSOR
+            bool "USE Sensor"
+
+    endmenu
+
+endmenu
+

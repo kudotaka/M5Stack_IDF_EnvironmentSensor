@@ -1,0 +1,116 @@
+menu "M5Stack hardware config"
+    choice
+        prompt "Select Model"
+        default SOFTWARE_MODEL_M5STAMP_S3
+        config SOFTWARE_MODEL_M5STAMP_S3
+            bool "MODEL-STAMP S3"
+        config SOFTWARE_MODEL_M5ATOMS3LITE
+            bool "MODEL-ATOM S3 Lite"
+    endchoice
+    config SOFTWARE_INTERNAL_WIFI_SUPPORT
+        bool "WIFI-Hardware"
+        default y
+    config SOFTWARE_ESP_MQTT_SUPPORT
+        bool "ESP MQTT"
+        depends on SOFTWARE_INTERNAL_WIFI_SUPPORT
+        default n
+    config SOFTWARE_INTERNAL_BUTTON_SUPPORT
+        bool "BUTTON-Hardware" if SOFTWARE_MODEL_M5STAMP_S3 || SOFTWARE_MODEL_M5ATOMS3LITE
+        default n
+    config SOFTWARE_INTERNAL_SK6812_SUPPORT
+        bool "RGB(SK6812)-LED-Hardware" if SOFTWARE_MODEL_M5STAMP_S3 || SOFTWARE_MODEL_M5ATOMS3LITE
+        default n
+    config SOFTWARE_POWER_CONTROL_BOARD_SUPPORT
+        bool "POWER-CONTROL-BOARD"
+        depends on SOFTWARE_MODEL_M5STAMP_S3
+        default n
+endmenu
+
+menu "M5Stack software config"
+
+    config ESP_WIFI_SSID
+        string "WiFi SSID"
+        default "myssid"
+        help
+            SSID (network name) for the example to connect to.
+
+    config ESP_WIFI_PASSWORD
+        string "WiFi Password"
+        default "mypassword"
+        help
+            WiFi password (WPA or WPA2) for the example to use.
+
+    choice ESP_WIFI_SAE_MODE
+        prompt "WPA3 SAE mode selection"
+        default ESP_WPA3_SAE_PWE_BOTH
+        help
+            Select mode for SAE as Hunt and Peck, H2E or both.
+        config ESP_WPA3_SAE_PWE_HUNT_AND_PECK
+            bool "HUNT AND PECK"
+        config ESP_WPA3_SAE_PWE_HASH_TO_ELEMENT
+            bool "H2E"
+        config ESP_WPA3_SAE_PWE_BOTH
+            bool "BOTH"
+    endchoice
+
+    config ESP_WIFI_PW_ID
+        string "PASSWORD IDENTIFIER"
+        depends on  ESP_WPA3_SAE_PWE_HASH_TO_ELEMENT|| ESP_WPA3_SAE_PWE_BOTH
+        default ""
+        help
+            password identifier for SAE H2E
+
+    config ESP_WIFI_MAXIMUM_RETRY
+        int "Maximum retry"
+        default 5
+        help
+            Set the Maximum retry to avoid station reconnecting to the AP unlimited when the AP is really inexistent.
+
+    choice ESP_WIFI_SCAN_AUTH_MODE_THRESHOLD
+        prompt "WiFi Scan auth mode threshold"
+        default ESP_WIFI_AUTH_WPA2_PSK
+        help
+            The weakest authmode to accept in the scan mode.
+            This value defaults to ESP_WIFI_AUTH_WPA2_PSK incase password is present and ESP_WIFI_AUTH_OPEN is used.
+            Please select ESP_WIFI_AUTH_WEP/ESP_WIFI_AUTH_WPA_PSK incase AP is operating in WEP/WPA mode.
+
+        config ESP_WIFI_AUTH_OPEN
+            bool "OPEN"
+        config ESP_WIFI_AUTH_WEP
+            bool "WEP"
+        config ESP_WIFI_AUTH_WPA_PSK
+            bool "WPA PSK"
+        config ESP_WIFI_AUTH_WPA2_PSK
+            bool "WPA2 PSK"
+        config ESP_WIFI_AUTH_WPA_WPA2_PSK
+            bool "WPA/WPA2 PSK"
+        config ESP_WIFI_AUTH_WPA3_PSK
+            bool "WPA3 PSK"
+        config ESP_WIFI_AUTH_WPA2_WPA3_PSK
+            bool "WPA2/WPA3 PSK"
+        config ESP_WIFI_AUTH_WAPI_PSK
+            bool "WAPI PSK"
+    endchoice
+
+    config BROKER_URL
+        string "Broker URL"
+        default "mqtt://XXX.XXX.XXX.XXX:1883"
+        help
+            URL of the broker to connect to
+    config BROKER_BUFFER_SIZE
+        int "Broker Buffer Size"
+        default 1024
+    config BROKER_LWT_QOS
+        int "Broker lwt_qos"
+        default 1
+    config BROKER_MY_DEVICE_ID
+        string "Device ID"
+        default "M5AtomS3Lite"
+    config BROKER_MY_PUB_TOPIC
+        string "Pub Topic"
+        default "pub/v1/M5AtomS3Lite"
+    config BROKER_PUBLISH_INTERVAL_TIME_MS
+        int "Publish Interval Time(ms)"
+        default 60000
+
+endmenu
