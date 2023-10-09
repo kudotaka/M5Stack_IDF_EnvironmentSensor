@@ -5,7 +5,7 @@ menu "M5 Unit config"
     config SOFTWARE_EXTERNAL_RTC_CLOCKOUT_1KHZ_SUPPORT
         bool "RTC(PCF8563) CLOCKOUT_1KHZ"
         depends on SOFTWARE_EXTERNAL_RTC_SUPPORT
-        default nq
+        default n
     config SOFTWARE_EXTERNAL_BUTTON_SUPPORT
         bool "BUTTON-Hardware [External]"
         default n

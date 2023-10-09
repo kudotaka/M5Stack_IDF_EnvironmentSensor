@@ -150,7 +150,8 @@ void RtcInit()
 #if CONFIG_SOFTWARE_INTERNAL_WIFI_SUPPORT
 TaskHandle_t xExternalRtc;
 static bool g_timeInitialized = false;
-const char servername[] = "ntp.jst.mfeed.ad.jp";
+//const char servername[] = "ntp.jst.mfeed.ad.jp";
+//const char servername[] = CONFIG_NTP_SERVER_NAME;
 
 static void time_sync_notification_cb(struct timeval *tv)
 {
@@ -167,8 +168,8 @@ void vExternal_rtc_task(void *pvParametes)
     setenv("TZ", "JST-9", 1);
     tzset();
 
-    ESP_LOGI(TAG, "ServerName:%s", servername);
-    esp_sntp_setservername(0, servername);
+    ESP_LOGI(TAG, "NTP ServerName:%s", CONFIG_NTP_SERVER_NAME);
+    esp_sntp_setservername(0, CONFIG_NTP_SERVER_NAME);
 
     sntp_set_time_sync_notification_cb(time_sync_notification_cb);
 
@@ -207,7 +208,8 @@ void vExternal_rtc_task(void *pvParametes)
 
         g_timeInitialized = false;
         esp_sntp_stop();
-        vTaskDelay( pdMS_TO_TICKS(6000000) );
+//        vTaskDelay( pdMS_TO_TICKS(6000000) );
+        vTaskDelay( pdMS_TO_TICKS(CONFIG_NTP_UPDATE_INTERVAL_TIME_MS) );
     }
 }
 #endif
@@ -242,7 +244,9 @@ void vClock_task(void *pvParametes)
 #if CONFIG_SOFTWARE_UI_SUPPORT
         ui_datetime_set(str1);
 #else
+#if CONFIG_NTP_CLOCK_LOG_ENABLE
     ESP_LOGI(TAG, "%s", str1);
+#endif
 #endif
 
         vTaskDelay( pdMS_TO_TICKS(990) );

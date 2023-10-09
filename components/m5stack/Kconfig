@@ -113,4 +113,13 @@ menu "M5Stack software config"
         int "Publish Interval Time(ms)"
         default 60000
 
+    config NTP_SERVER_NAME
+        string "Ntp Server Name"
+        default "XXX.XXX.XXX.XXX"
+    config NTP_UPDATE_INTERVAL_TIME_MS
+        int "Ntp Update Interval Time(ms)"
+        default 60000
+    config NTP_CLOCK_LOG_ENABLE
+        bool "Clock Log Enable"
+        default n
 endmenu
